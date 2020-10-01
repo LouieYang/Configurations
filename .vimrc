@@ -35,8 +35,6 @@ let g:spacevim_dir = $HOME.'/.space-vim'
 let g:spacevim_core_dir = '/core'
 let g:spacevim_version = '0.7.0'
 
-let g:ycm_python_binary_path = '/root/anaconda3/bin/python/'
-
 set runtimepath+=$HOME/.space-vim/core
 
 call spacevim#begin()
@@ -75,10 +73,13 @@ hi Comment cterm=italic
 " Jedi-Vim Settings
 let g:jedi#use_tabs_not_buffers = 1
 let g:jedi#popup_on_dot = 0
+let g:jedi#popup_select_first = 0
+let g:pymode_rope = 0
+let g:jedi#completions_enabled = 1
 
 " Nerd-Tree Settings
-nmap ,m :NERDTreeToggle<CR>
-nmap ,n :NERDTreeFind<CR>
+nmap <Leader>m :NERDTreeToggle<CR>
+nmap <Leader>f :NERDTreeFind<CR>
 
 " Easy Motion
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
@@ -103,20 +104,22 @@ map  <Leader>w <Plug>(easymotion-bd-w)
 nmap <Leader>w <Plug>(easymotion-overwin-w)
 
 " Tagbar
-nmap <Leader>t :TagbarToggle<CR>
+nnoremap <Leader>t :TagbarToggle<CR>
 
 "copy (write) highlighted text to .vimbuffer
 vmap <C-c> y:new ~/.vimbuffer<CR>VGp:x<CR> \| :!cat ~/.vimbuffer \| clip.exe <CR><CR>
 " paste from buffer
-map <C-v> :r ~/.vimbuffer<CR>
+" map <C-v> :r ~/.vimbuffer<CR>
+nmap <C-h> :noh<CR>
 
 " Netrw Setting
-let g:netrw_browse_split = 2
+let g:netrw_browse_split = 3
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_altv = 1
-let g:netrw_winsize = 25
+"let g:netrw_winsize = 75
 
+syntax enable
 set background=dark
 set t_Co=256
 
@@ -125,3 +128,44 @@ let g:mkdp_path_to_chrome = '/mnt/c/Program\ Files\ \(x86\)/Google/Chrome/Applic
 nmap <silent> <F8> <Plug>MarkdownPreview        
 " for insert mode
 imap <silent> <F8> <Plug>MarkdownPreview        
+
+set guifont=consolas\ 20
+
+let g:completor_python_binary = '/root/anaconda3/bin/python'
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+let g:completor_complete_options='menuone,noselect'
+
+tnoremap <F1> <C-W>N
+set shell=/usr/bin/zsh
+
+map <silent> <F12> :VSTerminalToggle<cr>
+tmap <silent> <F12> <c-w>:VSTerminalToggle<cr>
+
+let g:terminal_ansi_colors = [
+            \ "#373c40", "#ff5454", "#8cc85f", "#e3c78a",
+            \ "#80a0ff", "#ce76e8", "#7ee0ce", "#de935f",
+            \ "#f09479", "#f74782", "#42cf89", "#cfcfb0",
+            \ "#78c2ff", "#ae81ff", "#85dc85", "#e2637f"
+            \]
+
+xnoremap . :norm! .<CR>"{}
+nnoremap :W :w
+
+vmap <Leader>a <Plug>(EasyAlign)
+nmap <Leader>a <Plug>(EasyAlign)
+if !exists('g:easy_align_delimiters')
+  let g:easy_align_delimiters = {}
+endif
+let g:easy_align_delimiters['#'] = { 'pattern': '#', 'ignore_groups': ['String'] }
+
+" FZF options
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-h': 'split',
+  \ 'ctrl-s': 'vsplit' }
+nmap <silent> <Leader>, :FZF<cr>
+
+" paste multiple times
+xnoremap p pgvy
